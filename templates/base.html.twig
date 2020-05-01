@@ -3,10 +3,18 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('node_modules/bootsrtrap/dist/css/bootstrap.css') }}">
+        {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+    {% include 'fragments/header.html.twig' with {'name': 'aymen'} %}
+    <hr>
+        {% block body %}
+            Bonjour je suis le bloc parent
+        {% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
+    <hr>
+<h2>Footer</h2>
 </html>

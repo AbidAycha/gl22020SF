@@ -33,7 +33,7 @@
             <th>Description</th>
         </tr>
         {% for todo,description in app.session.get('todos') %}
-            <tr >
+            <tr class="{% if loop.index is odd %} table-primary {% else %} table-warning {% endif %}">
                 <td>{{ todo }}</td>
                 <td>{{ description }}</td>
             </tr>
