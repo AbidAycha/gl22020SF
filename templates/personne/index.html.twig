@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des personnes{% endblock %}
+
+{% block body %}
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Firstname</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Job</th>
+            <th>Cin</th>
+            <th>Image</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for personne in personnes %}
+            <tr>
+                <td>{{ personne.firstname }}</td>
+                <td>{{ personne.name }}</td>
+                <td>{{ personne.age }}</td>
+                <td>{{ personne.job }}</td>
+                <td>{{ personne.cin }}</td>
+                <td>
+                    <img
+                            width="50px" height="50px" class="rounded-circle"
+                            src="{{ personne.path }}" alt=""{{ personne.name }}>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+{% block PageTitle %}
+    Liste
+{% endblock %}
+
+{% block mainTitle %}
+    Personnes
+{% endblock %}
