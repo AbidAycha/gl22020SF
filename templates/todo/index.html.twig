@@ -24,13 +24,16 @@
             {{ message }}
         </div>
     {% endfor %}
+    <div class="alert alert-danger">
+        {{ 'test'|randomName }}
+    </div>
     <table class="table">
         <tr>
             <th>Todo</th>
             <th>Description</th>
         </tr>
         {% for todo,description in app.session.get('todos') %}
-            <tr>
+            <tr >
                 <td>{{ todo }}</td>
                 <td>{{ description }}</td>
             </tr>
