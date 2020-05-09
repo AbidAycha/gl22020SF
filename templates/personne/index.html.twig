@@ -7,32 +7,48 @@
     <table class="table table-hover">
         <thead>
         <tr>
+            <th>id</th>
+            <th>Image</th>
             <th>Firstname</th>
             <th>Name</th>
             <th>Age</th>
             <th>Job</th>
             <th>Cin</th>
-            <th>Image</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
         {% for personne in personnes %}
             <tr>
+                <td>{{ personne.id }}</td>
+                <td>
+                    <img
+                            width="50px" height="50px" class="rounded-circle"
+                            src="{{ personne.path }}" alt=""{{ personne.name }}>
+                </td>
                 <td>{{ personne.firstname }}</td>
                 <td>{{ personne.name }}</td>
                 <td>{{ personne.age }}</td>
                 <td>{{ personne.job }}</td>
                 <td>{{ personne.cin }}</td>
                 <td>
-                    <img
-                            width="50px" height="50px" class="rounded-circle"
-                            src="{{ personne.path }}" alt=""{{ personne.name }}>
+                    <a href="{{ path('personne.delete', {'id': personne.id}) }}">
+                        Delete
+                    </a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
+    {% if nbPage is defined %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% for p in 1..nbPage %}
+            <li class="page-item"><a class="page-link" href="{{ path('personne', {'page': p}) }}">{{ p }}</a></li>
+            {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
 {% endblock %}
 {% block PageTitle %}
     Liste
