@@ -6,8 +6,10 @@ use App\Entity\Cours;
 use App\Entity\Personne;
 use App\Entity\Section;
 use App\Entity\SocialMedia;
+use App\Form\PersonneType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -38,15 +40,14 @@ class PersonneController extends AbstractController
     /**
      * @Route("/delete/{id}", name="personne.delete")
      */
-    public function deletePersonne($id)
+    public function deletePersonne(Personne $personne = null)
     {
         /*
          * 1- Récupérer la personne d'id $id
          *  2- Si existe je le supprime et j'ajoute un flash de succès
          *  3- Sinon j'ajoute flash erreur
         */
-        $repository = $this->getDoctrine()->getRepository(Personne::class);
-        $personne = $repository->find($id);
+
         if (!$personne) {
             $this->addFlash('error', 'La suppression a échouée. Personne innexistante');
         } else {
@@ -77,9 +78,9 @@ class PersonneController extends AbstractController
     /**
      * @param EntityManagerInterface $manager
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @Route("/add", name="personne.add")
+     * @Route("/addFake", name="personne.add.fake")
      */
-    public function addPersonne(EntityManagerInterface $manager)  {
+    public function addFakePersonne(EntityManagerInterface $manager)  {
         $personne = new Personne();
         $personne->setFirstname('aymen');
         $personne->setName('sellaouti');
@@ -116,5 +117,37 @@ class PersonneController extends AbstractController
 
 //        return $this->forward('App\\Controller\\PersonneController::index');
         return $this->redirectToRoute('personne');
+    }
+
+    /**
+     * @Route("/edit/{id?0}", name="personne.edit")
+     */
+    public function editPersonne(Request $request, Personne $personne = null, EntityManagerInterface $manager) {
+        if (!$personne) {
+            $personne=  new Personne();
+        }
+        $form = $this->createForm(PersonneType::class, $personne);
+        $form->remove('socialMedia');
+        $form->remove('path');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if($form['image']) {
+                $image = $form['image']->getData();
+                $imagePath = md5(uniqid()).$image->getClientOriginalName();
+                $destination = __DIR__.'/../../public/assets/uploads';
+                try {
+                    $image->move($destination,$imagePath);
+                    $personne->setPath('assets/uploads/'.$imagePath);
+                } catch (FileException $fe) {
+                    echo $fe;
+                }
+            }
+            $manager->persist($personne);
+            $manager->flush();
+            return $this->redirectToRoute('personne');
+        }
+        return $this->render('personne/edit.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 }

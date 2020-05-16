@@ -54,4 +54,9 @@ class SocialMedia
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return "Fb : ".$this->getFb()." LinkedIn : ".$this->getLinkedIn();
+    }
 }

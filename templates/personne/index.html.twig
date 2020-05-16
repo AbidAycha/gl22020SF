@@ -3,7 +3,11 @@
 {% block title %}Liste des personnes{% endblock %}
 
 {% block body %}
-
+    <div>
+        <a href="{{ path('personne.edit')}}">
+            <i class="fa fa-user-plus fa-2x" aria-hidden="true"></i>
+        </a>
+    </div>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -24,7 +28,7 @@
                 <td>
                     <img
                             width="50px" height="50px" class="rounded-circle"
-                            src="{{ personne.path }}" alt=""{{ personne.name }}>
+                            src="{{ asset(personne.path) }}" alt=""{{ personne.name }}>
                 </td>
                 <td>{{ personne.firstname }}</td>
                 <td>{{ personne.name }}</td>
@@ -33,7 +37,10 @@
                 <td>{{ personne.cin }}</td>
                 <td>
                     <a href="{{ path('personne.delete', {'id': personne.id}) }}">
-                        Delete
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                    <a href="{{ path('personne.edit', {'id': personne.id})}}">
+                        <i class="fa fa-user-edit" aria-hidden="true"></i>
                     </a>
                 </td>
             </tr>
